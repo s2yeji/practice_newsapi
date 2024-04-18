@@ -1,23 +1,29 @@
-// const API_KEY = 'a8097d8ff3aa45249ab0a6a418b3b5c8';
-const API_KEY = '5e45fd8aa39a4017a0ab6d77dd1c2e5e';
-
 const btnHam = document.querySelector('.ham');
 const nav = document.querySelector('header > nav');
 const newsBoard = document.querySelector('.listCon');
-const btnSearch = document.querySelector('.btnSearch');
-const searchInput = document.querySelector('.inputArea input');
-
 let newsList = [];
+
+btnHam.addEventListener('click', () => {
+  nav.classList.toggle('on');
+});
+
+// const API_KEY = 'a8097d8ff3aa45249ab0a6a418b3b5c8';
+const API_KEY = '5e45fd8aa39a4017a0ab6d77dd1c2e5e';
+// const API_KEY = '오류키';
+
+// pagination
 let totalResults = 0;
-let pageSize = 10;
+let pageSize = 6;
 let page = 1;
 let groupSize = 5;
 
 const moveToPage = (pageNum, category) => {
+  // console.log('moveToPage check', pageNum);
   page = pageNum;
   const url = new URL(
     `https://newsapi.org/v2/top-headlines?s&apiKey=${API_KEY}&category=${category}`
   );
+  // console.log(url);
   fetchNews(url, category);
 };
 
@@ -28,14 +34,16 @@ const pagination = (category) => {
     pageGroup * groupSize
   );
   let firstPage = (pageGroup - 1) * groupSize + 1;
-  let paginationHtml = `<button class="prev"><i class="fa-solid fa-caret-left"></i></button>`;
 
+  let paginationHtml = `<button class="prev"><i class="fa-solid fa-caret-left"></i></button>`;
+  // for(let i = 처음 페이지 숫자; i<=마지막 페이지 숫자; i++){
+  // pagination += `<button>${i}</button>`
+  // }
   for (let i = firstPage; i <= lastPage; i++) {
     paginationHtml += `<button class="${
       i == page ? 'on' : ''
     }" onclick="moveToPage(${i}, '${category}')">${i}</button>`;
   }
-
   paginationHtml += `<button class="next"><i class="fa-solid fa-caret-right"></i></button>`;
 
   document.querySelector('.pgCon').innerHTML = paginationHtml;
@@ -71,6 +79,9 @@ const fetchNews = async (url, category = 'general') => {
   }
 };
 
+const btnSearch = document.querySelector('.btnSearch');
+const searchInput = document.querySelector('.inputArea input');
+
 const fnSearch = () => {
   const searchWord = searchInput.value;
   searchInput.value = '';
@@ -80,6 +91,15 @@ const fnSearch = () => {
   fetchNews(url);
 };
 
+btnSearch.addEventListener('click', async () => {
+  fnSearch();
+});
+
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key !== 'Enter') return;
+  fnSearch();
+});
+
 const getNewsByCate = async (category) => {
   page = 1;
   const url = new URL(
@@ -87,6 +107,13 @@ const getNewsByCate = async (category) => {
   );
   fetchNews(url, category);
 };
+
+nav.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  let category = e.target.dataset.cate;
+
+  getNewsByCate(category);
+});
 
 const createHtml = (news) => {
   let urlToImage = news.urlToImage ? news.urlToImage : '../img/noImg.png';
@@ -139,25 +166,5 @@ const getLatestNews = async () => {
   );
   fetchNews(url);
 };
-
-btnHam.addEventListener('click', () => {
-  nav.classList.toggle('on');
-});
-
-nav.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'BUTTON') return;
-  let category = e.target.dataset.cate;
-
-  getNewsByCate(category);
-});
-
-btnSearch.addEventListener('click', async () => {
-  fnSearch();
-});
-
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key !== 'Enter') return;
-  fnSearch();
-});
 
 getLatestNews();

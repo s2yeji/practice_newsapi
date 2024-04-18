@@ -9,7 +9,7 @@
 }
 
 :root {
-  background-color: #f5f5f5;
+  background-color: #f7f7f7;
   color: #333;
   --size: 16px;
   font-family: 'GowunBatang-Regular';
@@ -82,7 +82,7 @@ header nav button:hover::before {
   padding: 0 var(--size);
 }
 .inputArea input:focus {
-  color: rgb(0, 132, 255);
+  color: #0084ff;
 }
 .inputArea i {
   padding: var(--size);
@@ -112,6 +112,13 @@ header nav button:hover::before {
 }
 .listCon > li:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.listCon > li.noList {
+  background-color: transparent;
+  text-align: center;
+  font-size: 0.85em;
+  color: #999;
+  line-height: 1;
 }
 .newsImg {
   height: 200px;
@@ -161,6 +168,37 @@ header nav button:hover::before {
   transform: scale(1.2);
 }
 
+.pgCon {
+  display: flex;
+  justify-content: center;
+  /* gap: calc(var(--size) - 6px); */
+  padding: calc(var(--size) * 2) 0;
+}
+.pgCon button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 0.75em;
+  transition: 0.5s;
+  cursor: pointer;
+}
+.pgCon button:hover,
+.pgCon button.on {
+  background-color: #333;
+  color: white;
+  font-weight: bold;
+}
+.pgCon .prev,
+.pgCon .next {
+}
+.pgCon .prev {
+}
+.pgCon .next {
+}
+
 footer {
   padding: var(--size) 0;
   text-align: center;
@@ -175,8 +213,10 @@ footer {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    width: 100%;
     margin: 0;
     z-index: 100;
+    background-color: #f7f7f7;
   }
   header nav {
     position: fixed;
@@ -190,7 +230,7 @@ footer {
     background-color: #dfdfdf;
   }
   header nav.on {
-    right: -10%;
+    right: 0%;
     align-items: flex-start;
     padding-left: calc(var(--size) * 1.5);
   }
@@ -206,5 +246,9 @@ footer {
 
   main {
     padding-top: 120px;
+  }
+
+  .inputArea {
+    width: calc(100% - var(--size) * 2);
   }
 }
